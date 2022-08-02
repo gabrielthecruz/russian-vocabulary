@@ -1,8 +1,0 @@
-li {
-    line-height: 2em;
-    font-size: 16px
-}
-
-.btn {
-    margin: 1em;
-}

@@ -7,6 +7,5 @@
 /robots.txt RobotsR GET
 
 / HomeR GET 
-/plural PluralR GET
 
-/comments CommentR POST
+/plural PluralR GET
