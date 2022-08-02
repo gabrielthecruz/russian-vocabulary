@@ -87,18 +87,23 @@ instance Yesod App where
     defaultLayout :: Widget -> Handler Html
     defaultLayout widget = do
         master <- getYesod
-        mmsg <- getMessage
+        -- mmsg <- getMessage
 
         mcurrentRoute <- getCurrentRoute
 
         -- Get the breadcrumbs, as defined in the YesodBreadcrumbs instance.
-        (title, parents) <- breadcrumbs
+        -- (title, parents) <- breadcrumbs
 
         -- Define the menu items of the header.
         let menuItems =
                 [ NavbarLeft $ MenuItem
                     { menuItemLabel = "Home"
                     , menuItemRoute = HomeR
+                    , menuItemAccessCallback = True
+                    },
+                    NavbarLeft $ MenuItem
+                    { menuItemLabel = "Plural"
+                    , menuItemRoute = PluralR
                     , menuItemAccessCallback = True
                     }
                 ]
@@ -117,7 +122,7 @@ instance Yesod App where
 
         pc <- widgetToPageContent $ do
             addStylesheet $ StaticR css_bootstrap_css
-                                    -- ^ generated from @Settings/StaticFiles.hs@
+            --                         ^ generated from @Settings/StaticFiles.hs@
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 

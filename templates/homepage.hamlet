@@ -5,13 +5,3 @@
                 Русский Словарь
             <h2>
                 Train your russian vocabulary
-
-<div .container>
-    <!-- Starting
-        ================================================== -->
-    <div .bs-docs-section>
-        <div .row.align-items-center>
-            <div .col-lg-12>
-                <a role="button" .btn.btn-primary.btn-lg>Plural
-                <a role="button" .btn.btn-primary.btn-lg>Vocabulário
-                    
