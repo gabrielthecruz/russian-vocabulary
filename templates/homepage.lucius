@@ -11,3 +11,7 @@ li {
     width: 400px;
     height: 100px;
 }
+
+.btn {
+    margin: 1em;
+}
