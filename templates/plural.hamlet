@@ -1,1 +1,14 @@
 <h1 .header>Множественное Число
+
+<h2>Found #{wordsCount}
+<table .table.table-bordered>
+    <tr>
+        <th>Word
+        <th>Plural Form
+        <th>Word Type
+
+    $forall (key, word, wt) <- wordsWithPlural
+        <tr>
+            <td>#{key}
+            <td>#{word}
+            <td>#{wt}
