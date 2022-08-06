@@ -3,12 +3,22 @@
 <h2>Found #{wordsCount}
 <table .table.table-bordered>
     <tr>
+        <th>Id
         <th>Word
-        <th>Plural Form
-        <th>Word Type
+        <th>Plural
 
-    $forall (key, word, wt) <- wordsWithPlural
+    $forall (accented, word, wt) <- wordsWithPlural
         <tr>
-            <td>#{key}
-            <td>#{word}
             <td>#{wt}
+            <td>
+                $forall (isCharAccented, char) <- parseAccented accented
+                    $if isCharAccented
+                        <b>#{char}#
+                    $else
+                        #{char}#
+            <td>
+                $forall (isCharAccented, char) <- parseAccented word
+                        $if isCharAccented
+                            <b>#{char}#
+                        $else
+                            #{char}#

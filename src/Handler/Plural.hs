@@ -11,12 +11,17 @@ module Handler.Plural where
 
 import Import
 
+parseAccented :: String -> [(Bool, Char)]
+parseAccented [] = []
+parseAccented (x : '\'' : xs) = (True, x) : parseAccented xs
+parseAccented (x : xs) = (False, x) : parseAccented xs
+
 getPluralR :: Handler Html
 getPluralR = do
-  ruWords <- runDB $ selectList [RuWordLevel <-. [Just "A1", Just "A2", Nothing], RuWordWordType <-. [Just "noun", Just "adjective"]] []
-  ruForms <- runDB $ selectList [WordFormWordId <-. (map entityKey $ take 150 ruWords), WordFormWordFormType <-. ["ru_noun_pl_nom", "ru_adj_pl_nom"]] []
+  ruWords <- runDB $ selectList [RuWordLevel <-. [Just "A1", Just "A2", Nothing], RuWordWordType <-. [Just "noun"]] []
+  ruForms <- runDB $ selectList [WordFormWordId <-. map entityKey (take 50 ruWords), WordFormWordFormType <-. ["ru_noun_pl_nom", "ru_adj_pl_nom"]] []
   let wordsWithPlural =
-        [ (ruWordAccented ruWord, wordFormForm wordForm, show $ ruWordWordType ruWord)
+        [ (ruWordAccented ruWord, wordFormForm wordForm, toPathPiece ruWordKey)
           | Entity ruWordKey ruWord <- ruWords,
             Entity _ wordForm <- ruForms,
             ruWordKey == wordFormWordId wordForm
