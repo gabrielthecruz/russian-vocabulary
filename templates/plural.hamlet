@@ -1,24 +1,29 @@
 <h1 .header>Множественное Число
 
-<h2>Found #{wordsCount}
-<table .table.table-bordered>
-    <tr>
-        <th>Id
-        <th>Word
-        <th>Plural
+<div .container>
+    <table .table>
+        <tbody>
+            $forall (accented, word, wordId) <- wordsWithPlural
+                <tr>
+                    <td .col-md-2.text-center>
+                        $forall (isCharAccented, char) <- parseAccented accented
+                            $if isCharAccented
+                                <b>#{char}#
+                            $else
+                                #{char}#
 
-    $forall (accented, word, wt) <- wordsWithPlural
-        <tr>
-            <td>#{wt}
-            <td>
-                $forall (isCharAccented, char) <- parseAccented accented
-                    $if isCharAccented
-                        <b>#{char}#
-                    $else
-                        #{char}#
-            <td>
-                $forall (isCharAccented, char) <- parseAccented word
-                        $if isCharAccented
-                            <b>#{char}#
-                        $else
-                            #{char}#
+                    <td .col-md-2>
+                        <input .form-control type="text" name=#{"word" ++ wordId}>
+
+                    <td .col-md-1>
+                        <button .form-control.btn.btn-primary type="button">OK
+                    
+                    <td .col-md-1>
+                        Молодец!
+
+                    <td .col>
+                        $forall (isCharAccented, char) <- parseAccented word
+                            $if isCharAccented
+                                <b>#{char}#
+                            $else
+                                #{char}#
