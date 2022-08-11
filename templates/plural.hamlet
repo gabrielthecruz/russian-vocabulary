@@ -3,7 +3,7 @@
 <div .container>
     <table .table>
         <tbody>
-            $forall (accented, word, wordId) <- wordsWithPlural
+            $forall (accented, word, wordId, plw) <- wordsWithPlural
                 <tr>
                     <td .col-md-2.text-center>
                         $forall (isCharAccented, char) <- parseAccented accented
@@ -13,17 +13,15 @@
                                 #{char}#
 
                     <td .col-md-2>
-                        <input .form-control type="text" name=#{"word" ++ wordId}>
+                        <input id=#{"word" ++ wordId} .form-control type="text">
 
                     <td .col-md-1>
-                        <button .form-control.btn.btn-primary type="button">OK
+                        <button .form-control.btn.btn-primary type="button" onclick="checkAnswer('#{wordId}','#{plw}')">OK
                     
-                    <td .col-md-1>
-                        Молодец!
-
                     <td .col>
-                        $forall (isCharAccented, char) <- parseAccented word
-                            $if isCharAccented
-                                <b>#{char}#
-                            $else
-                                #{char}#
+                        <p id=#{"answer" ++ wordId} .invisible >
+                            $forall (isCharAccented, char) <- parseAccented word
+                                $if isCharAccented
+                                    <b>#{char}#
+                                $else
+                                    #{char}#

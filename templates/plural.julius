@@ -1,0 +1,20 @@
+function checkAnswer(wordId, answer)
+{
+    var inputTextTag = document.getElementById("word" + wordId);
+    var answerTag = document.getElementById("answer" + wordId);
+
+    if (inputTextTag.value == "")
+    {
+        return;
+    }
+
+    inputTextTag["readOnly"] = true;
+    if (inputTextTag.value == answer)
+    {
+        answerTag.classList = ["visible text-success"];
+    }
+    else 
+    {
+        answerTag.classList = ["visible text-danger"];
+    }
+}
