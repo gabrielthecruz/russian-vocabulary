@@ -5,12 +5,26 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE NoImplicitPrelude #-}
 
 module Handler.Plural where
 
 import Import
+import System.Random ( Random(randomRs), mkStdGen )
+import qualified Prelude
+import Data.List (nub)
+import System.CPUTime (getCPUTime)
 
+rndIndex :: Int -> IO [Int]
+rndIndex len = do
+  cpuTime <- getCPUTime
+  let gen = mkStdGen $ fromIntegral cpuTime
+  return $ nub $ randomRs (0, len) gen
+
+shuffle :: [a] -> IO [a]
+shuffle x = do
+  indexes <- liftIO $ rndIndex $ length x
+  return $ take 25 [x Prelude.!! i | i <- indexes] 
+  
 parseAccented :: String -> [(Bool, Char)]
 parseAccented [] = []
 parseAccented (x : '\'' : xs) = (True, x) : parseAccented xs
@@ -23,7 +37,8 @@ getRows n x = take n x : getRows n (drop n x)
 getPluralR :: Handler Html
 getPluralR = do
   ruWords <- runDB $ selectList [RuWordWordType <-. [Just "noun"]] []
-  ruForms <- runDB $ selectList [WordFormWordId <-. map entityKey (take 25 ruWords), WordFormWordFormType ==. "ru_noun_pl_nom"] []
+  shuffledWords <- liftIO $ shuffle ruWords
+  ruForms <- runDB $ selectList [WordFormWordId <-. map entityKey shuffledWords, WordFormWordFormType ==. "ru_noun_pl_nom"] []
   let wordsWithPlural =
         [ (ruWordAccented ruWord, wordFormForm wordForm, toPathPiece ruWordKey, wordFormBare wordForm)
           | Entity ruWordKey ruWord <- ruWords,
