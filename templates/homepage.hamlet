@@ -5,3 +5,11 @@
                 Русский Словарь
             <h2>
                 Train your russian vocabulary
+        
+<div .container>
+    <div .row>
+        <p>
+            This project uses OpenRussian.org database. 
+            You can access it #
+            <a href="https://en.openrussian.org/dictionary">here#
+            .
