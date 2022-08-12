@@ -20,10 +20,10 @@ rndIndex len = do
   let gen = mkStdGen $ fromIntegral cpuTime
   return $ nub $ randomRs (0, len) gen
 
-shuffle :: [a] -> IO [a]
-shuffle x = do
+shuffle :: Int -> [a] -> IO [a]
+shuffle n x = do
   indexes <- liftIO $ rndIndex $ length x
-  return $ take 25 [x Prelude.!! i | i <- indexes] 
+  return $ take n [x Prelude.!! i | i <- indexes] 
   
 parseAccented :: String -> [(Bool, Char)]
 parseAccented [] = []
@@ -37,8 +37,8 @@ getRows n x = take n x : getRows n (drop n x)
 getPluralR :: Handler Html
 getPluralR = do
   ruWords <- runDB $ selectList [RuWordWordType <-. [Just "noun"]] []
-  shuffledWords <- liftIO $ shuffle ruWords
-  ruForms <- runDB $ selectList [WordFormWordId <-. map entityKey shuffledWords, WordFormWordFormType ==. "ru_noun_pl_nom"] []
+  shuffledWords <- liftIO $ shuffle 100 ruWords
+  ruForms <- runDB $ selectList [WordFormWordId <-. map entityKey shuffledWords, WordFormWordFormType ==. "ru_noun_pl_nom"] [LimitTo 32]
   let wordsWithPlural =
         [ (ruWordAccented ruWord, wordFormForm wordForm, toPathPiece ruWordKey, wordFormBare wordForm)
           | Entity ruWordKey ruWord <- ruWords,

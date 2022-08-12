@@ -3,25 +3,26 @@
 <div .container>
     <table .table>
         <tbody>
-            $forall (accented, word, wordId, plw) <- wordsWithPlural
+            $forall ruWordRow <- getRows 2 wordsWithPlural
                 <tr>
-                    <td .col-md-2.text-center>
-                        $forall (isCharAccented, char) <- parseAccented accented
-                            $if isCharAccented
-                                <b>#{char}#
-                            $else
-                                #{char}#
-
-                    <td .col-md-2>
-                        <input id=#{"word" ++ wordId} .form-control type="text">
-
-                    <td .col-md-1>
-                        <button .form-control.btn.btn-primary type="button" onclick="checkAnswer('#{wordId}','#{plw}')">OK
-                    
-                    <td .col>
-                        <p id=#{"answer" ++ wordId} .invisible >
-                            $forall (isCharAccented, char) <- parseAccented word
+                    $forall (accented, word, wordId, plw) <- ruWordRow
+                        <td .col-md-2.text-center>
+                            $forall (isCharAccented, char) <- parseAccented accented
                                 $if isCharAccented
                                     <b>#{char}#
                                 $else
                                     #{char}#
+
+                        <td .col-md-2>
+                            <input id=#{"word" ++ wordId} .form-control type="text">
+
+                        <td .col-md-1>
+                            <button .form-control.btn.btn-primary type="button" onclick="checkAnswer('#{wordId}','#{plw}')">OK
+                        
+                        <td .col-md-1>
+                            <p id=#{"answer" ++ wordId} .invisible >
+                                $forall (isCharAccented, char) <- parseAccented word
+                                    $if isCharAccented
+                                        <b>#{char}#
+                                    $else
+                                        #{char}#
