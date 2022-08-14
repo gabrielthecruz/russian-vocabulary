@@ -9,3 +9,4 @@
 / HomeR GET 
 
 /plural PluralR GET
+/present PresentR GET

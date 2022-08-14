@@ -127,6 +127,12 @@ instance Yesod App where
                 { menuItemLabel = "Plural",
                   menuItemRoute = PluralR,
                   menuItemAccessCallback = True
+                },
+            NavbarLeft $
+              MenuItem
+                { menuItemLabel = "Verbs in Present",
+                  menuItemRoute = PresentR,
+                  menuItemAccessCallback = True
                 }
           ]
 

@@ -1,0 +1,32 @@
+<h1 .header>Глаголы в Настоящее Время
+
+<div .container>
+    $forall wordsRow <- getRows 2 ruWords
+        <div .row>
+            $forall Entity ruWordKey ruWord <- wordsRow
+                <div .col-sm-6>
+                    <table .table.table-bordered>
+                        <thead>
+                            <tr>
+                                <th .text-center colspan="3">
+                                    $forall (isCharAccented, char) <- parseAccented $ ruWordAccented ruWord
+                                        $if isCharAccented
+                                            <u>#{char}#
+                                        $else
+                                            #{char}#
+                        <tbody>
+                            $forall Entity wordFormKey wordForm <- wordsForms
+                                $if ruWordKey == wordFormWordId wordForm
+                                    <tr>
+                                        <td .col-sm-4.text-center>#{parseWordFormType $ wordFormWordFormType wordForm}
+
+                                        <td .col-sm-4>
+                                            <input id=#{"word" ++ toPathPiece wordFormKey} type="text" onchange="checkAnswer('#{toPathPiece wordFormKey}')">
+
+                                        <td id=#{toPathPiece wordFormKey} .col-sm-4.invisible>#
+                                            $forall (isCharAccented, char) <- parseAccented $ wordFormForm wordForm
+                                                $if isCharAccented
+                                                    <b>#{char}#
+                                                $else
+                                                    #{char}#
+
