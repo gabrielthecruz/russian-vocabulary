@@ -48,7 +48,7 @@ parseWordFormType :: String -> String
 parseWordFormType x
   | x == "ru_verb_presfut_sg1" = "Я"
   | x == "ru_verb_presfut_sg2" = "Ты"
-  | x == "ru_verb_presfut_sg3" = "Он/Она/Оно"
+  | x == "ru_verb_presfut_sg3" = "Он · Она · Оно"
   | x == "ru_verb_presfut_pl1" = "Мы"
   | x == "ru_verb_presfut_pl2" = "Вы"
   | x == "ru_verb_presfut_pl3" = "Они"
@@ -59,11 +59,9 @@ getPresentR = do
   allRuWords <- runDB $ selectList [RuWordWordType <-. [Just "verb"]] []
   shuffledWords <- liftIO $ shuffle 20 allRuWords
   wordsForms <- runDB $ selectList [WordFormWordId <-. map entityKey shuffledWords, WordFormWordFormType <-. presFut] []
-  -- ruWords <- runDB $ selectList [RuWordId <-. map wordFormWordId (take 100 $ map entityVal wordsForms)] []
-  -- wordsForms <- runDB $ selectList [WordFormWordFormType <-. presFut] []
   let keys = nub [key | Entity key _ <- allRuWords, Entity _ wordForm <- wordsForms, key == wordFormWordId wordForm]
       ruWords = take 10 [Entity ruWordKey ruWord | key <- keys, Entity ruWordKey ruWord <- allRuWords, ruWordKey == key]
-  -- ruWords2 = take 10 [Entity ruWordKey ruWord | Entity ruWordKey ruWord <- allRuWords, ]
+  ruWordsTranslation <- runDB $ selectList [RuWordTranslationWordId <-. keys] []
   defaultLayout $ do
     setTitle "Verbs in Present - Русский Словарь"
     $(widgetFile "verbs-present")

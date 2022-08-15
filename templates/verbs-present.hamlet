@@ -14,11 +14,16 @@
                                             <u>#{char}#
                                         $else
                                             #{char}#
+                            <tr>
+                                <th name="translation" .text-center colspan="3">
+                                    $forall Entity _ ruWordTranslation <- ruWordsTranslation
+                                        $if ruWordKey == ruWordTranslationWordId ruWordTranslation
+                                            #{ruWordTranslationTranslation ruWordTranslation} · #
                         <tbody>
                             $forall Entity wordFormKey wordForm <- wordsForms
                                 $if ruWordKey == wordFormWordId wordForm
                                     <tr>
-                                        <td .col-sm-4.text-center>#{parseWordFormType $ wordFormWordFormType wordForm}
+                                        <th scope="row" .col-sm-4.text-center>#{parseWordFormType $ wordFormWordFormType wordForm}
 
                                         <td .col-sm-4>
                                             <input id=#{"word" ++ toPathPiece wordFormKey} type="text" onchange="checkAnswer('#{toPathPiece wordFormKey}')">
@@ -29,4 +34,3 @@
                                                     <b>#{char}#
                                                 $else
                                                     #{char}#
-

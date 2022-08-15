@@ -18,3 +18,12 @@ WordForm sql=ru_word_form
     form String 
     bare String
     deriving Show
+
+RuWordTranslation
+    wordId RuWordId
+    position Int
+    translation String
+    exampleRu String Maybe
+    exampleEn String Maybe sql=example_tl
+    info String Maybe
+    deriving Show
