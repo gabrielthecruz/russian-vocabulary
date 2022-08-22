@@ -1,7 +1,7 @@
-function checkAnswer(wordId, answer)
+function checkAnswer(wordId)
 {
     var inputTextTag = document.getElementById("word" + wordId);
-    var answerTag = document.getElementById("answer" + wordId);
+    var answerTag = document.getElementById(wordId);
 
     if (inputTextTag.value == "")
     {
@@ -9,12 +9,12 @@ function checkAnswer(wordId, answer)
     }
 
     inputTextTag["readOnly"] = true;
-    if (inputTextTag.value == answer)
+    if (inputTextTag.value.toLowerCase().trim() == answerTag.textContent.toLowerCase().trim())
     {
-        answerTag.classList = ["visible text-success"];
+        answerTag.classList = ["visible text-center text-success"];
     }
     else 
     {
-        answerTag.classList = ["visible text-danger"];
+        answerTag.classList = ["visible text-center text-danger"];
     }
 }
