@@ -1,4 +1,3 @@
-{-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -154,12 +153,6 @@ instance Yesod App where
       $(widgetFile "default-layout")
     withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
-  -- The page to be redirected to when authentication is required.
-  -- authRoute
-  --     :: App
-  --     -> Maybe (Route App)
-  -- authRoute _ = Just $ AuthR LoginR
-
   isAuthorized ::
     -- | The route the user is visiting.
     Route App ->
@@ -225,8 +218,6 @@ instance YesodBreadcrumbs App where
     Route App ->
     Handler (Text, Maybe (Route App))
   breadcrumb HomeR = return ("Home", Nothing)
-  -- breadcrumb (AuthR _) = return ("Login", Just HomeR)
-  -- breadcrumb ProfileR = return ("Profile", Just HomeR)
   breadcrumb _ = return ("home", Nothing)
 
 -- How to run database actions.
@@ -241,52 +232,6 @@ instance YesodPersistRunner App where
   getDBRunner :: Handler (DBRunner App, Handler ())
   getDBRunner = defaultGetDBRunner appConnPool
 
--- instance YesodAuth App where
---     type AuthId App = UserId
-
---     -- Where to send a user after successful login
---     loginDest :: App -> Route App
---     loginDest _ = HomeR
---     -- Where to send a user after logout
---     logoutDest :: App -> Route App
---     logoutDest _ = HomeR
---     -- Override the above two destinations when a Referer: header is present
---     redirectToReferer :: App -> Bool
---     redirectToReferer _ = True
-
---     authenticate :: (MonadHandler m, HandlerSite m ~ App)
---                  => Creds App -> m (AuthenticationResult App)
---     authenticate creds = liftHandler $ runDB $ do
---         x <- getBy $ UniqueUser $ credsIdent creds
---         case x of
---             Just (Entity uid _) -> return $ Authenticated uid
---             Nothing -> Authenticated <$> insert User
---                 { userIdent = credsIdent creds
---                 , userPassword = Nothing
---                 }
-
---     -- You can add other plugins like Google Email, email or OAuth here
---     authPlugins :: App -> [AuthPlugin App]
---     authPlugins app = [authOpenId Claimed []] ++ extraAuthPlugins
---         -- Enable authDummy login if enabled.
---         where extraAuthPlugins = [authDummy | appAuthDummyLogin $ appSettings app]
-
--- -- | Access function to determine if a user is logged in.
--- isAuthenticated :: Handler AuthResult
--- isAuthenticated = do
---     muid <- maybeAuthId
---     return $ case muid of
---         Nothing -> Unauthorized "You must login to access this page"
---         Just _ -> Authorized
-
--- instance YesodAuthPersist App
-
--- This instance is required to use forms. You can modify renderMessage to
--- achieve customized and internationalized form validation messages.
-instance RenderMessage App FormMessage where
-  renderMessage :: App -> [Lang] -> FormMessage -> Text
-  renderMessage _ _ = defaultFormMessage
-
 -- Useful when writing code that is re-usable outside of the Handler context.
 -- An example is background jobs that send email.
 -- This can also be useful for writing code that works across multiple Yesod applications.
@@ -296,11 +241,3 @@ instance HasHttpManager App where
 
 unsafeHandler :: App -> Handler a -> IO a
 unsafeHandler = Unsafe.fakeHandlerGetLogger appLogger
-
--- Note: Some functionality previously present in the scaffolding has been
--- moved to documentation in the Wiki. Following are some hopefully helpful
--- links:
---
--- https://github.com/yesodweb/yesod/wiki/Sending-email
--- https://github.com/yesodweb/yesod/wiki/Serve-static-files-from-a-separate-domain
--- https://github.com/yesodweb/yesod/wiki/i18n-messages-in-the-scaffolding

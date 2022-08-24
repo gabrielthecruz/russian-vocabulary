@@ -1,0 +1,8 @@
+$forall (isCharAccented, char) <- accented
+    $if isCharAccented
+        $if useBold
+            <b>#{char}#
+        $else
+            <u>#{char}#
+    $else
+        #{char}#

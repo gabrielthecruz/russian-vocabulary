@@ -5,34 +5,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# OPTIONS_GHC -Wno-unused-do-bind #-}
 
 module Handler.Present where
 
-import Data.List (nub)
-import Import
-import System.CPUTime (getCPUTime)
-import System.Random (Random (randomRs), mkStdGen)
-import qualified Prelude
-
-rndIndex :: Int -> IO [Int]
-rndIndex len = do
-  cpuTime <- getCPUTime
-  let gen = mkStdGen $ fromIntegral cpuTime
-  return $ nub $ randomRs (0, len) gen
-
-shuffle :: Int -> [a] -> IO [a]
-shuffle n x = do
-  indexes <- liftIO $ rndIndex $ length x
-  return $ take n [x Prelude.!! i | i <- indexes]
-
-parseAccented :: String -> [(Bool, Char)]
-parseAccented [] = []
-parseAccented (x : '\'' : xs) = (True, x) : parseAccented xs
-parseAccented (x : xs) = (False, x) : parseAccented xs
-
-getRows :: Int -> [a] -> [[a]]
-getRows _ [] = [[]]
-getRows n x = take n x : getRows n (drop n x)
+import Data.List (intercalate)
+import Data.List.Split (chunksOf)
+import Import hiding (intercalate, keys)
+import Utils (accentedWidget, shuffle)
 
 presFut :: [String]
 presFut =
@@ -56,12 +37,23 @@ parseWordFormType x
 
 getPresentR :: Handler Html
 getPresentR = do
-  allRuWords <- runDB $ selectList [RuWordWordType <-. [Just "verb"]] []
-  shuffledWords <- liftIO $ shuffle 20 allRuWords
-  wordsForms <- runDB $ selectList [WordFormWordId <-. map entityKey shuffledWords, WordFormWordFormType <-. presFut] []
-  let keys = nub [key | Entity key _ <- allRuWords, Entity _ wordForm <- wordsForms, key == wordFormWordId wordForm]
-      ruWords = take 10 [Entity ruWordKey ruWord | key <- keys, Entity ruWordKey ruWord <- allRuWords, ruWordKey == key]
-  ruWordsTranslation <- runDB $ selectList [RuWordTranslationWordId <-. keys] []
+  verbs <- runDB $ selectList [RuWordWordType ==. Just "verb"] []
+  shuffled <- liftIO $ shuffle 30 verbs
+  wordsForms <- runDB $ selectList [WordFormWordId <-. map entityKey shuffled, WordFormWordFormType <-. presFut] []
+  translations <- runDB $ selectList [RuWordTranslationWordId <-. map entityKey shuffled] []
+  let ruWordsRows =
+        chunksOf 2 $ -- rows
+          take 10 $
+            filter
+              (\(_, forms, _) -> length forms == 6) -- filters only what has all pronouns for present tense
+              [ ( ruWord,
+                  filter (\(Entity _ wordForm) -> ruWordKey == wordFormWordId wordForm) wordsForms,
+                  map (ruWordTranslationTranslation . entityVal) $
+                    filter (\(Entity _ val) -> ruWordKey == ruWordTranslationWordId val) translations
+                )
+                | ruWord@(Entity ruWordKey ruWordItem) <- shuffled,
+                  foldr ((||) . (`isSuffixOf` ruWordBare ruWordItem)) False ["ать", "еть", "ить"]
+              ]
   defaultLayout $ do
-    setTitle "Verbs in Present - Русский Словарь"
+    setTitle "Present Tense - Русский Словарь"
     $(widgetFile "verbs-present")

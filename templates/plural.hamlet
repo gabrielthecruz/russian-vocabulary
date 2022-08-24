@@ -1,48 +1,17 @@
 <h1 .header>Множественное Число
 
 <div .container>
-    <div .col-sm-6>
-        <table .table.table-bordered>
-            <tbody>
-                $forall ruWordRow <- getRows 1 pluralWords1
-                    <tr>
-                        $forall (accented, word, wordId, plw) <- ruWordRow
-                            <td .col-sm-2.text-center>
-                                $forall (isCharAccented, char) <- parseAccented accented
-                                    $if isCharAccented
-                                        <b>#{char}#
-                                    $else
-                                        #{char}#
+    $forall ruWordCol <- pluralWords
+        <div .col-sm-6>
+            <table .table.table-bordered.table-responsive>
+                <tbody>
+                    $forall (Entity ruWordKey ruWord, Entity _ wordForm) <- ruWordCol
+                        <tr>
+                            <td .col-sm-2.text-center style="font-weight: bold">
+                                ^{accentedWidget False $ ruWordAccented ruWord}
 
                             <td .col-sm-2>
-                                <input id=#{"word" ++ wordId} type="text" onchange="checkAnswer('#{wordId}')">
+                                <input id=#{"word" ++ toPathPiece ruWordKey} type="text" onchange="checkAnswer('#{toPathPiece ruWordKey}')">
                             
-                            <td id=#{wordId} .col-sm-2.invisible.text-center>
-                                $forall (isCharAccented, char) <- parseAccented word
-                                    $if isCharAccented
-                                        <b>#{char}#
-                                    $else
-                                        #{char}#
-
-    <div .col-sm-6>
-        <table .table.table-bordered>
-            <tbody>
-                $forall ruWordRow <- getRows 1 pluralWords2
-                    <tr>
-                        $forall (accented, word, wordId, plw) <- ruWordRow
-                            <td .col-sm-2.text-center>
-                                $forall (isCharAccented, char) <- parseAccented accented
-                                    $if isCharAccented
-                                        <b>#{char}#
-                                    $else
-                                        #{char}#
-
-                            <td .col-sm-2>
-                                <input id=#{"word" ++ wordId} type="text" onchange="checkAnswer('#{wordId}')">
-                            
-                            <td id=#{wordId} .col-sm-2.invisible.text-center>
-                                $forall (isCharAccented, char) <- parseAccented word
-                                    $if isCharAccented
-                                        <b>#{char}#
-                                    $else
-                                        #{char}#
+                            <td id=#{toPathPiece ruWordKey} .col-sm-2.invisible>
+                                ^{accentedWidget True $ wordFormForm wordForm}
