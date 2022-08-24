@@ -129,7 +129,7 @@ instance Yesod App where
                 },
             NavbarLeft $
               MenuItem
-                { menuItemLabel = "Verbs in Present",
+                { menuItemLabel = "Present Tense",
                   menuItemRoute = PresentR,
                   menuItemAccessCallback = True
                 }
@@ -139,7 +139,7 @@ instance Yesod App where
     let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
 
     let navbarLeftFilteredMenuItems = [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
-    let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
+    -- let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]
 
     -- We break up the default layout into two components:
     -- default-layout is the contents of the body tag, and
@@ -148,7 +148,7 @@ instance Yesod App where
     -- you to use normal widget features in default-layout.
 
     pc <- widgetToPageContent $ do
-      addStylesheet $ StaticR css_bootstrap_css
+      addStylesheet $ StaticR css_bootstrap_min_css
       --                         ^ generated from @Settings/StaticFiles.hs@
       $(widgetFile "default-layout")
     withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")

@@ -4,17 +4,12 @@ function checkAnswer(wordId)
     var answerTag = document.getElementById(wordId);
 
     if (inputTextTag.value == "")
-    {
         return;
-    }
 
     inputTextTag["readOnly"] = true;
-    if (inputTextTag.value.toLowerCase().trim() == answerTag.textContent.toLowerCase().trim())
-    {
-        answerTag.classList = ["visible text-center text-success"];
-    }
-    else 
-    {
-        answerTag.classList = ["visible text-center text-danger"];
-    }
+    var isAnswerRight = inputTextTag.value.toLowerCase().trim() == answerTag.textContent.toLowerCase().trim();
+    var classList = "visible text-center text-";
+
+    classList += isAnswerRight ? "success" : "danger";
+    answerTag.classList = [classList];
 }

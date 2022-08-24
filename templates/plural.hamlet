@@ -1,17 +1,19 @@
-<h1 .header>Множественное Число
+<h1 .mt-3>Множественное Число
 
-<div .container>
+<div .row.mt-3>
     $forall ruWordCol <- pluralWords
         <div .col-sm-6>
             <table .table.table-bordered.table-responsive>
                 <tbody>
                     $forall (Entity ruWordKey ruWord, Entity _ wordForm) <- ruWordCol
                         <tr>
-                            <td .col-sm-2.text-center style="font-weight: bold">
+                            <td .col-sm-2.text-center>
                                 ^{accentedWidget False $ ruWordAccented ruWord}
 
                             <td .col-sm-2>
-                                <input id=#{"word" ++ toPathPiece ruWordKey} type="text" onchange="checkAnswer('#{toPathPiece ruWordKey}')">
+                                <input id=#{"word" ++ toPathPiece ruWordKey} 
+                                    placeholder="Answer here..." type="text" 
+                                    onchange="checkAnswer('#{toPathPiece ruWordKey}')">
                             
                             <td id=#{toPathPiece ruWordKey} .col-sm-2.invisible>
                                 ^{accentedWidget True $ wordFormForm wordForm}

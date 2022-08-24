@@ -1,6 +1,6 @@
-<h1 .header>Глаголы в Настоящее Время
+<h1 .mt-3>Глаголы в Настоящее Время
 
-<div .container>
+<div .row.mt-3>
     $forall wordsRow <- ruWordsRows
         <div .row>
             $forall (Entity _ ruWord, ruWordForms, ruTrans) <- wordsRow
@@ -11,7 +11,7 @@
                                 <th .text-center colspan="3">
                                     ^{accentedWidget False $ ruWordAccented ruWord}
                             <tr>
-                                <th name="translation" .text-center colspan="3">
+                                <td name="translation" .text-center colspan="3">
                                     $if length ruTrans == 0
                                         No translation found!
                                     $else
@@ -19,10 +19,12 @@
                         <tbody>
                             $forall Entity wordFormKey wordForm <- ruWordForms
                                 <tr>
-                                    <th scope="row" .col-sm-4.text-center>#{parseWordFormType $ wordFormWordFormType wordForm}
+                                    <td scope="row" .col-sm-3.text-center>#{parseWordFormType $ wordFormWordFormType wordForm}
 
                                     <td .col-sm-4>
-                                        <input id=#{"word" ++ toPathPiece wordFormKey} type="text" onchange="checkAnswer('#{toPathPiece wordFormKey}')">
+                                        <input id=#{"word" ++ toPathPiece wordFormKey} type="text" 
+                                            placeholder="Answer here..."
+                                            onchange="checkAnswer('#{toPathPiece wordFormKey}')">
 
                                     <td id=#{toPathPiece wordFormKey} .col-sm-4.invisible>#
                                         ^{accentedWidget True $ wordFormForm wordForm}

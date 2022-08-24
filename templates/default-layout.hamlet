@@ -2,40 +2,24 @@
 <!-- Static navbar -->
 <nav .navbar.navbar-default.navbar-static-top>
     <div .container>
-        <div .navbar-header>
-            <button type="button" .navbar-toggle.collapsed data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation
-                <span class="icon-bar">
-                <span class="icon-bar">
-                <span class="icon-bar">
-
-        <div #navbar .collapse.navbar-collapse>
-            <ul .nav.navbar-nav>
+        <div .d-flex.flex-wrap.align-items-center.justify-content-center.justify-content-lg-start>
+            <ul .nav.col-12.col-lg-auto.me-lg-auto.mb-2.justify-content-center.mb-md-0>
                 $forall MenuItem label route _ <- navbarLeftFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
-
-            <ul .nav.navbar-nav.navbar-right>
-                $forall MenuItem label route _ <- navbarRightFilteredMenuItems
-                    <li :Just route == mcurrentRoute:.active>
-                        <a href="@{route}">#{label}
+                    <li>
+                        <a href="@{route}" .nav-link.px-2 :Just route == mcurrentRoute:.text-secondary :Just route /= mcurrentRoute:.text-white>#{label}
 
 <!-- Page Contents -->
 $if (Just HomeR == mcurrentRoute)
     ^{widget}
 $else
     <div .container>
-        <div .row>
-            <div .col-md-12>
-                ^{widget}
+        ^{widget}
 
 <!-- Footer -->
-<footer .footer>
-    <div .container>
-        <p .text-muted>
-            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-                <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png">
-            <br>
-            This work is licensed under a #
-            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-                Creative Commons Attribution-ShareAlike 4.0 International License.
+<footer>
+    <p .text-muted.text-center>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png">
+        This work is licensed under a #
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            Creative Commons Attribution-ShareAlike 4.0 International License.
