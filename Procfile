@@ -1,0 +1,1 @@
+web: russian-vocabulary-exe
