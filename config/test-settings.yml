@@ -6,6 +6,6 @@ database:
   # something like:
   #
   #   database: "_env:SQLITE_DATABASE:russian-vocabulary_test.sqlite3"
-  database: russian-vocabulary_test.sqlite3
+  database: d1rb8imlls6cc1
 
 auth-dummy-login: true
