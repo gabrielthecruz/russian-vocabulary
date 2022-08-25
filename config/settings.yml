@@ -11,7 +11,7 @@ ip-from-header: "_env:YESOD_IP_FROM_HEADER:false"
 
 # Default behavior: determine the application root from the request headers.
 # Uncomment to set an explicit approot
-#approot:        "_env:YESOD_APPROOT:http://localhost:3000"
+approot:        "_env:YESOD_APPROOT:http://localhost:3000"
 
 # By default, `yesod devel` runs in development, and built executables use
 # production settings (see below). To override this, use the following:
@@ -32,9 +32,13 @@ ip-from-header: "_env:YESOD_IP_FROM_HEADER:false"
 # See https://github.com/yesodweb/yesod/wiki/Configuration#parsing-numeric-values-as-strings
 
 database:
+  user:     "_env:YESOD_PGUSER:htyylbfakevqwr"
+  password: "_env:YESOD_PGPASS:18832dca0dc54d9225b6dfb9552c994d038e2c4a0f1a93eb3510bf56ecfedfba"
+  host:     "_env:YESOD_PGHOST:ec2-34-227-135-211.compute-1.amazonaws.com"
+  port:     "_env:YESOD_PGPORT:5432"
   # See config/test-settings.yml for an override during tests
-  database: "_env:YESOD_SQLITE_DATABASE:russian-vocabulary.sqlite3"
-  poolsize: "_env:YESOD_SQLITE_POOLSIZE:10"
+  database: "_env:YESOD_PGDATABASE:d1rb8imlls6cc1"
+  poolsize: "_env:YESOD_PGPOOLSIZE:10"
 
 copyright: Insert copyright statement here
 #analytics: UA-YOURCODE
