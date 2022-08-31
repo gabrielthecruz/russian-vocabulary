@@ -10,3 +10,5 @@
 
 /plural PluralR GET
 /present PresentR GET
+/cases CasesR GET
+/cases/#String SpecificCaseR GET

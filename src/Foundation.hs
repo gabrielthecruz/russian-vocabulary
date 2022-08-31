@@ -132,11 +132,17 @@ instance Yesod App where
                 { menuItemLabel = "Present Tense",
                   menuItemRoute = PresentR,
                   menuItemAccessCallback = True
+                },
+            NavbarLeft $
+              MenuItem
+                { menuItemLabel = "Cases",
+                  menuItemRoute = CasesR,
+                  menuItemAccessCallback = True
                 }
           ]
 
     let navbarLeftMenuItems = [x | NavbarLeft x <- menuItems]
-    let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
+    -- let navbarRightMenuItems = [x | NavbarRight x <- menuItems]
 
     let navbarLeftFilteredMenuItems = [x | x <- navbarLeftMenuItems, menuItemAccessCallback x]
     -- let navbarRightFilteredMenuItems = [x | x <- navbarRightMenuItems, menuItemAccessCallback x]

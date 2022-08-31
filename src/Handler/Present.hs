@@ -41,6 +41,7 @@ getPresentR = do
   shuffled <- liftIO $ shuffle 30 verbs
   wordsForms <- runDB $ selectList [WordFormWordId <-. map entityKey shuffled, WordFormWordFormType <-. presFut] []
   translations <- runDB $ selectList [RuWordTranslationWordId <-. map entityKey shuffled] []
+  let pageName = "Глаголы в Настоящее Время" :: Text
   let ruWordsRows =
         chunksOf 2 $ -- rows
           take 10 $

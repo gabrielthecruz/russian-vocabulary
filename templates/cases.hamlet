@@ -1,0 +1,19 @@
+<h1 .mt-3>Cases
+
+<div .row.mt-3>
+    <div .row.mt-3.justify-content-center>
+        <div .col-md-2>
+            <a href=@{SpecificCaseR "genitive"} .btn.btn-lg.btn-dark.form-control>Genitive
+        <div .col-md-2>
+            <a href=@{SpecificCaseR "dative"} .btn.btn-lg.btn-dark.form-control>Dative
+
+    <div .row.mt-3.justify-content-center>
+        <div .col-md-2>
+            <a href=@{SpecificCaseR "prepositional"} .btn.btn-lg.btn-dark.form-control>Prepositional
+        <div .col-md-2>
+            <a href=@{SpecificCaseR "accusative"} .btn.btn-lg.btn-dark.form-control>Accusative
+
+    <div .row.mt-3.justify-content-center>
+        <div .col-md-4>
+            <a href=@{SpecificCaseR "instrumental"} .btn.btn-lg.btn-dark.form-control>Instrumental
+        
