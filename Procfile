@@ -1,1 +1,1 @@
-web: russian-vocabulary
+web: cabal run -- -p $PORT
